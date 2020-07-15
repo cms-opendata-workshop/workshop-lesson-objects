@@ -1,0 +1,138 @@
+---
+title: "Event Selection"
+teaching: 
+exercises:
+questions:
+- "How do I select events based on muons and taus?"
+.objectives:
+- "Select events based on muon pt+eta requirements, IDs and isolation"
+- "Select events based on tau pt+eta+charge requirements, IDs and isolation"
+- "Access an object code collection"
+.keypoints:
+-
+-
+-
+---
+
+
+
+## 
+
+CMS NanoAOD files store per-event information that is needed in analyses. 
+NanoAOD files are stored in Ntuple format and contains a main TTree named Events and some additional TTrees for run, lumi and metadata. 
+
+In the previous exercises, you learned how to access and store object information from an AOD file and convert the AOD file to NanoAOD using the [AOD2NanoAODOutreachTool](https://github.com/cms-opendata-analyses/AOD2NanoAODOutreachTool). 
+[HiggsTauTauNanoAODOutreachAnalysis] (https://github.com/cms-opendata-analyses/HiggsTauTauNanoAODOutreachAnalysis) repository  contains an analysis that reduces the NanoAOD files to study the decay of a Higgs boson to two tau leptons.
+This exercise uses this repository as the example we will use for selecting events in the NanoAOD based on requirements on muons and taus.  
+
+Simulations to be used in the analysis:
+
+*GluGluToHToTauTau
+*VBF_HToTauTau
+Background processes can produce very similar signatures in the detector which have to be considered in the anaylsis.
+The most prominent background processes with a similar signature:
+*DYJetsToLL
+*TTbar
+*W1JetsToLNu
+*W2JetsToLNu
+*W3JetsToLNu
+
+
+Data samples to be used in the analysis:
+
+*Run2012B_TauPlusX
+*Run2012C_TauPlusX
+
+
+#Viewing NanoAOD files
+
+~~~
+root -l root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/GluGluToHToTauTau.root
+new TBrowser;
+~~~
+{: .source}
+
+[Insert picture of Tree here]
+
+{: .output}
+
+You can now view the Event branches by selecting the root file GluGluToHToTauTau.root and selecting the main TTree named Events.
+You can make cuts interactively on event branches in root.
+As an example there is a branch named Muon_pt and we can make the event selection for Muon pt > 17 
+
+~~~
+TTree *Events = (TTree*)_file0->Get("Events")
+Events->Draw("Muon_pt","Muon_pt>17")
+~~~
+{: .source}
+
+[Insert output]
+{: .output}
+
+~~~
+#include "ROOT/RDataFrame.hxx"
+~~~
+{: .source}
+
+This function performs a selection on the minimal requirements of an event.
+Here we require that the event passes a high level trigger and we have at least one muon and tau candidate in our event.
+~~~
+template <typename T>
+auto MinimalSelection(T &df) {
+    return df.Filter("HLT_IsoMu17_eta2p1_LooseIsoPFTau20 == true", "Passes trigger")
+             .Filter("nMuon > 0", "nMuon > 0")
+             .Filter("nTau > 0", "nTau > 0");
+}
+~~~
+{: .source}
+
+We use this funciton to find the interesting muons in the muon collection. 
+This selection requires muons to have eta<2.1 and pt>17 and also requires the muon to pass tightId.
+~~~
+template <typename T>
+auto FindGoodMuons(T &df) {
+    return df.Define("goodMuons", "abs(Muon_eta) < 2.1 && Muon_pt > 17 && Muon_tightId == true");
+}
+
+~~~
+{: .source}
+
+We use this function to find the interesting taus in the tau collection. These tau candidates represent gadronic decays of taus which means that
+the tau decays to combinations of pions and neutrinos in the final state.
+~~~
+template <typename T>
+auto FindGoodTaus(T &df) {
+    return df.Define("goodTaus", "Tau_charge != 0 && abs(Tau_eta) < 2.3 && Tau_pt > 20 &&\
+                                  Tau_idDecayMode == true && Tau_idIsoTight == true && \
+                                  Tau_idAntiEleTight == true && Tau_idAntiMuTight == true");
+}
+~~~
+{: .source}
+
+
+We can reduce the dataset to the interesting events containing at least one interesting
+muon and tau candidate.
+
+~~~
+template <typename T>
+auto FilterGoodEvents(T &df) {
+    return df.Filter("Sum(goodTaus) > 0", "Event has good taus")
+             .Filter("Sum(goodMuons) > 0", "Event has good muons");
+}
+~~~
+{: .source}
+
+We can then use the functions we have created to perform event selections on the GluGluToHToTauTau sample.
+~~~
+ROOT::RDataFrame df("Events", "root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/GluGluToHToTauTau.root");
+auto df2 = MinimalSelection(df);
+auto df3 = FindGoodMuons(df2);
+auto df4 = FindGoodTaus(df3);
+auto df5 = FilterGoodEvents(df4);
+~~~
+
+~~~
+auto dfFinal = df5;
+dfFinal.Snapshot("Events", sample + "Skim.root", finalVariables);
+~~~
+{: .source}
