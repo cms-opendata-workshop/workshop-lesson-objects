@@ -5,11 +5,11 @@ exercises: 5
 questions:
 - "How can I store basic information about a given object, like 4-vectors?"
 objectives:
-- "FIXME"
+- "There are several objectives for this episode"
 keypoints:
-- "FIXME"
+- "And indeed also there are key points!"
 ---
-FIXME
+This episode remains to be written! Do it tonight. 
 
 
 {% include links.md %}
