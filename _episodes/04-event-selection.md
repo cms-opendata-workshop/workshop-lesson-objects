@@ -69,10 +69,32 @@ Events->Draw("Muon_pt","Muon_pt>17")
 [Insert output]
 {: .output}
 
+The RDataFrame in ROOT offers a high level interface for anlyses of data stored in TTree, 
 ~~~
 #include "ROOT/RDataFrame.hxx"
+ROOT::EnableImplicitMT(); // Tell ROOT you want to go parallel
+ROOT::RDataFrame df("Events", "root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/GluGluToHToTauTau.root"); //Interface to TTree
+auto myHisto = df.Histo1D("Muon_pt"); // This happens in parallel!
+myHisto->Draw();
 ~~~
 {: .source}
+
+[Insert output]
+{: .output}
+
+The RDataFrame can perform transformations (to manupulate the data) and actions (to produce a result from the data). 
+The Define and Filter methods are transformations while the Count and Report methods are actions.
+
+Define - Creates a new column in the datset 
+Filter - Filters the rows of the dataset
+Count  - Returns the number of events processed
+Report - Obtains statistics on how many entries have been accepted and rejected by the filters
+
+~~~
+std::cout << "Number of events: " << *df.Count() << std::endl;
+~~~
+
+Source: (https://root.cern/doc/master/classROOT_1_1RDataFrame.html)
 
 This function performs a selection on the minimal requirements of an event.
 Here we require that the event passes a high level trigger and we have at least one muon and tau candidate in our event.
@@ -123,7 +145,9 @@ auto FilterGoodEvents(T &df) {
 {: .source}
 
 We can then use the functions we have created to perform event selections on the GluGluToHToTauTau sample.
+
 ~~~
+ROOT::EnableImplicitMT();
 ROOT::RDataFrame df("Events", "root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/GluGluToHToTauTau.root");
 auto df2 = MinimalSelection(df);
 auto df3 = FindGoodMuons(df2);
@@ -133,6 +157,8 @@ auto df5 = FilterGoodEvents(df4);
 
 ~~~
 auto dfFinal = df5;
+auto report = dfFinal.Report();
 dfFinal.Snapshot("Events", sample + "Skim.root", finalVariables);
+report->Print();
 ~~~
 {: .source}
