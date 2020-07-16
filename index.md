@@ -21,5 +21,6 @@ This lesson is going to teach you how to interaction with physics objects.
 > 3. Where can I find CMS-specific information about a given object, like identification criteria?
 > 4. How do I select events based on these objects?
 >
-{: .checklist
+{: .checklist}
+
 {% include links.md %}

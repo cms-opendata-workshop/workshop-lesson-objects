@@ -1,7 +1,6 @@
 ---
 title: "CMS Physics Objects"
 teaching: 10
-exercises: 5
 questions:
 - "What are the main CMS Physics Objects and how do I access them?"
 objectives:
