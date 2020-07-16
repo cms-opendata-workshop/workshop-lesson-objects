@@ -1,17 +1,17 @@
 ---
 title: "Event Selection"
-teaching: 
-exercises:
+teaching: 15 min
+exercises: 15 min
 questions:
-- "How do I select events based on muons and taus?"
+- "How do I select events based on physics objects?"
 .objectives:
-- "Select events based on muon pt+eta requirements, IDs and isolation"
-- "Select events based on tau pt+eta+charge requirements, IDs and isolation"
-- "Access an object code collection"
+- "Understand typical object selection criteria"
+- "Implement selections for the muon and tau examples"
+- "Begin the workshop's physics analysis example"
 .keypoints:
--
--
--
+- "Selection criteria include kinematic limits (momentum and angle), identification, and isolation."
+- "Kinematic limits are usually based on detector ranges and the physics process being studied."
+- "Identification and isolation criteria depend mostly on your physics analysis goals."
 ---
 
 
