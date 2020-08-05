@@ -103,6 +103,7 @@ Source: (https://root.cern/doc/master/classROOT_1_1RDataFrame.html)
 
 This function performs a selection on the minimal requirements of an event.
 Here we require that the event passes a high level trigger and we have at least one muon and tau candidate in our event.
+ 
 ~~~
 template <typename T>
 auto MinimalSelection(T &df) {
@@ -127,7 +128,14 @@ auto FindGoodMuons(T &df) {
 
 We use this function to find the interesting taus in the tau collection. These tau candidates represent hadronic decays of taus which means that
 the tau decays to combinations of pions and neutrinos in the final state. Add your cuts on tau eta and pt similar to how it was done for muon.
+
 Also add requirements for the tau charge, Tau_idDecayMode, Tau_idIsoTight, Tau_idAntiEleTight, Tau_idAntiMuTight.
+
+Notice that we have added an isolation requirement for our tau. 
+Hard processes produce large angles between the final state partons. The final object of interest will be separated from 
+the other objects in the event or be isolated. For instance an isolated muon from a W. In contrast, a non-isolated muon can come from
+a weak decay inside a jet. Isolation variables are ET and pT sums in cones (drawn around the object) in eta-phi space. 
+Isolation of a muon is done relative to detector objects such as detector hits and tracks.
 ~~~
 template <typename T>
 auto FindGoodTaus(T &df) {
