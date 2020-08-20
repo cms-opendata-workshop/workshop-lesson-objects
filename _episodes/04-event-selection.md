@@ -25,6 +25,12 @@ In the previous exercises, you learned how to access and store object informatio
 [HiggsTauTauNanoAODOutreachAnalysis] (https://github.com/cms-opendata-analyses/HiggsTauTauNanoAODOutreachAnalysis) repository  contains an analysis that reduces the NanoAOD files to study the decay of a Higgs boson to two tau leptons.
 This exercise uses this repository as the example we will use for selecting events in the NanoAOD based on requirements on muons and taus.  
 
+Data samples to be used in the analysis:
+
+*Run2012B_TauPlusX
+*Run2012C_TauPlusX
+
+
 Simulations to be used in the analysis:
 
 *GluGluToHToTauTau
@@ -37,12 +43,11 @@ The most prominent background processes with a similar signature:
 *W2JetsToLNu
 *W3JetsToLNu
 
-
-Data samples to be used in the analysis:
-
-*Run2012B_TauPlusX
-*Run2012C_TauPlusX
-
+We have to take all these background processes into account when analyzing our data and drawing conclusions.
+In event selection, our goal is to keep the signal coming from Higss to tau tau decay and suppress the backgrounds.
+These background processes can be suppressed by introducing kinematic limits on the physics objects.
+For instance, the W boson can decay into a lepton. The leptons can be misidentified as coming from a signal. 
+A cut in the event selection on the transverse mass of the muon and the missing energy can strongly suppress this background coming from W+ jets. 
 
 #Viewing NanoAOD files
 
@@ -98,6 +103,7 @@ Source: (https://root.cern/doc/master/classROOT_1_1RDataFrame.html)
 
 This function performs a selection on the minimal requirements of an event.
 Here we require that the event passes a high level trigger and we have at least one muon and tau candidate in our event.
+ 
 ~~~
 template <typename T>
 auto MinimalSelection(T &df) {
@@ -110,6 +116,7 @@ auto MinimalSelection(T &df) {
 
 We use this funciton to find the interesting muons in the muon collection. 
 This selection requires muons to have eta<2.1 and pt>17 and also requires the muon to pass tightId.
+
 ~~~
 template <typename T>
 auto FindGoodMuons(T &df) {
@@ -119,19 +126,27 @@ auto FindGoodMuons(T &df) {
 ~~~
 {: .source}
 
-We use this function to find the interesting taus in the tau collection. These tau candidates represent gadronic decays of taus which means that
-the tau decays to combinations of pions and neutrinos in the final state.
+We use this function to find the interesting taus in the tau collection. These tau candidates represent hadronic decays of taus which means that
+the tau decays to combinations of pions and neutrinos in the final state. Add your cuts on tau eta and pt similar to how it was done for muon.
+
+Also add requirements for the tau charge, Tau_idDecayMode, Tau_idIsoTight, Tau_idAntiEleTight, Tau_idAntiMuTight.
+
+Notice that we have added an isolation requirement for our tau. 
+Hard processes produce large angles between the final state partons. The final object of interest will be separated from 
+the other objects in the event or be isolated. For instance an isolated muon from a W. In contrast, a non-isolated muon can come from
+a weak decay inside a jet. Isolation variables are ET and pT sums in cones (drawn around the object) in eta-phi space. 
+Isolation of a muon is done relative to detector objects such as detector hits and tracks.
 ~~~
 template <typename T>
 auto FindGoodTaus(T &df) {
-    return df.Define("goodTaus", "Tau_charge != 0 && abs(Tau_eta) < 2.3 && Tau_pt > 20 &&\
-                                  Tau_idDecayMode == true && Tau_idIsoTight == true && \
-                                  Tau_idAntiEleTight == true && Tau_idAntiMuTight == true");
+    return df.Define("goodTaus", "PUT YOUR SELECTIONS HERE");
 }
 ~~~
 {: .source}
 
+Implement the selections on muon and tau in a copy of the HiggsTauTauNanoAODOutreachAnalysis repository provided for you.
 
+ 
 We can reduce the dataset to the interesting events containing at least one interesting
 muon and tau candidate.
 
