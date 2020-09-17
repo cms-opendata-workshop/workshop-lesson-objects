@@ -39,9 +39,10 @@ value efficiency over background rejection, and some analyses are the opposite.
 The "standard" identification and isolation algorithm results can be accessed from the physics
 object classes. CMS maintains reference pages that document the various options:
 
+ * General: [CMS Physics Objects 2011](http://opendata.cern.ch/docs/cms-physics-objects-2011)
  * Muons: [SWGuide Muon ID](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId)
- * Electrons: FIND A PUBLIC LINK
- * Photons: FIND A PUBLIC LINK
+ * Electrons: [EGamma Public Data](https://twiki.cern.ch/twiki/bin/view/CMSPublic/EgammaPublicData)
+ * Photons: [EGamma Public Data](https://twiki.cern.ch/twiki/bin/view/CMSPublic/EgammaPublicData), [Summary document (see Table 1 for photon ID)](https://cms-physics.web.cern.ch/cms-physics/public/EGM-10-006-pas.pdf)
  * Tau leptons: [Legacy Tau ID Run 1](https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookPFTauTagging#Legacy_Tau_ID_Run_I), [Nutshell Recipe](https://twiki.cern.ch/twiki/bin/view/CMSPublic/NutShellRecipeFor5312AndNewer)
 
 ## Muons
