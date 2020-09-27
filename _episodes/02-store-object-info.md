@@ -169,11 +169,12 @@ if (!isData){
 >ROOT TBrowser, look at some histograms of the branches you've added to the tree throughout this
 >episode.
 >
->~~~
->cmsRun configs/simulation_cfg.py
->root -l TESTFILENAME.root
->[0] TBrowser b
->~~~
+> ~~~
+> $ scram b
+> $ cmsRun configs/simulation_cfg.py
+> $ root -l output.root
+> [0] TBrowser b
+> ~~~
 >{: .source}
 {: .challenge}
 
