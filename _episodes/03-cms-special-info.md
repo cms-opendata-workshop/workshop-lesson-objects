@@ -180,8 +180,7 @@ the detector is used to form the identification criteria for all physics objects
 >Using the documentation links provided above, familiarize yourself with the detector-related information used to 
 >construct muon identification criteria. If time permits, attempt to replicate the content of the existing "soft" or "tight" 
 >ID flags using a combination of cuts on these quantities.
- 
-{# .challenge}
+{: .challenge}
 
 
 
