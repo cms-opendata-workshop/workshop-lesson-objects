@@ -100,9 +100,7 @@ iEvent.getByLabel(InputTag("hpsPFTauProducer"), taus);
 
 // Get various tau discriminator collections
 Handle<PFTauDiscriminator> tausLooseIso, tausVLooseIso, tausMediumIso, tausTightIso,
-                           tausDecayMode, tausLooseEleRej, tausMediumEleRej,
-                           tausTightEleRej, tausLooseMuonRej, tausMediumMuonRej,
-                           tausTightMuonRej, tausRawIso;
+                           tausDecayMode, tausRawIso;
 
 iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByDecayModeFinding"),tausDecayMode);
 iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByRawCombinedIsolationDBSumPtCorr"),tausRawIso);
@@ -131,12 +129,57 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 ~~~
 {: .source}
 
->## Challenge: think of a challenge
+>## Challenge: many other tau discriminants exist. Based on information from the TWiki, 
+>save the values for some discriminants that are based on rejecting electrons or muons.
+
 {: .challenge}
 
 ## Detector-related information
 
-Not done yet!
+Most `reco::<object>` classes contain member functions that return detector-related information. In the
+case of electrons and photons, we see this information used as identification criteria:
+
+~~~
+value_el_isLoose[value_el_n] = false;
+value_el_isMedium[value_el_n] = false;
+value_el_isTight[value_el_n] = false;
+if ( abs(it->eta()) <= 1.479 ) {
+  if ( abs(it->deltaEtaSuperClusterTrackAtVtx())<.007 && abs(it->deltaPhiSuperClusterTrackAtVtx())<.15 &&
+       it->sigmaIetaIeta()<.01 && it->hadronicOverEm()<.12 &&
+       abs(trk->dxy(pv))<.02 && abs(trk->dz(pv))<.2 &&
+       missing_hits<=1 && pfIso<.15 && passelectronveto==true &&
+       abs(1/it->ecalEnergy()-1/(it->ecalEnergy()/it->eSuperClusterOverP()))<.05 ){
+
+    value_el_isLoose[value_el_n] = true;
+
+    if ( abs(it->deltaEtaSuperClusterTrackAtVtx())<.004 && abs(it->deltaPhiSuperClusterTrackAtVtx())<.06 && abs(trk->dz(pv))<.1 ){
+      value_el_isMedium[value_el_n] = true;
+
+      if (abs(it->deltaPhiSuperClusterTrackAtVtx())<.03 && missing_hits<=0 && pfIso<.10 ){
+        value_el_isTight[value_el_n] = true;
+      }
+    }
+  }
+}
+~~~
+{: .source}
+
+The first two criteria (`deltaEta` and `deltaPh`) indicate how the electron's trajectory varies between the track and the ECAL cluster,
+with smaller variations preferred for the "tightest" quality levels. The `sigmaIetaIeta` criterion describes the variance of the ECAL
+cluster in psuedorapidity (recall the "ieta" labels on the red LEGO bricks!). There are futher criteria for the ratio of hadronic to 
+electromagnetic energy deposits, the track impact parameters, and the difference between the ECAL energy and electron's momentum --
+all of which are expected to be small for genuine electrons with well-reconstructed tracks. Finally, a good electron should have very 
+few "missing hits" (gaps in the trajectory through the inner tracker), be reasonably isolated from other particle-flow candidates in the
+nearby spatial region, and should pass an algorithm that rejects electrons from photon conversion in the tracker. Similar information from 
+the detector is used to form the identification criteria for all physics objects. 
+
+
+>## Challenge: using the documentation links provided above, familiarize yourself with the detector-related information used to 
+>construct muon identification criteria. If time permits, attempt to replicate the content of the existing "soft" or "tight" 
+>ID flags using a combination of cuts on these quantities.
+ 
+{# .challenge}
+
 
 
 

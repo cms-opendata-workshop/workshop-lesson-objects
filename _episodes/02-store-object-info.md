@@ -23,7 +23,7 @@ mass or energy**.
 
 ## 4-vector access functions
 
-In the AOD2NanoAOD tool, the muon four-vector elements are accessed as shown below. The
+In `AOD2NanoAOD/src/AOD2NanoAOD.cc` the muon four-vector elements are accessed as shown below (line XX). The
 values for each muon are stored into an array, which will become a branch in a ROOT TTree. 
 
 ~~~
@@ -38,9 +38,9 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 
 >## Challenge: electron 4-vector
 >
->You set up the workshop's version of the AOD2NanoAOD tool in your pre-exercises. Now
+>You set up the workshop's version of the AOD2NanoAOD tool in the previous episode. Now
 >edit `src/AOD2NanoAOD.cc` to access and store the electron's four-vector elements,
->folling the examples set for muons. You'll need to create the arrays and TTree branches!
+>folling the examples set for muons. Note: You'll also need to create the arrays and TTree branches!
 >
 {: .challenge}
 
@@ -165,12 +165,14 @@ if (!isData){
 >## Challenge: electron matching
 >
 >Match selected electrons to the interesting generated particles.
->Compile your code and run over one Drell-Yan input file, then
->check out the branches you've added to the tree throughout this
+>Compile your code and run over the simulation test file. Using the 
+>ROOT TBrowser, look at some histograms of the branches you've added to the tree throughout this
 >episode.
 >
 >~~~
->cmsRun configs/simulation_1DY_cfg.py
+>cmsRun configs/simulation_cfg.py
+>root -l TESTFILENAME.root
+>[0] TBrowser b
 >~~~
 >{: .source}
 {: .challenge}
