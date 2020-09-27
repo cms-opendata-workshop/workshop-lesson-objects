@@ -81,11 +81,11 @@ repository is the example we will use for accessing information from AOD files. 
 please check out the "dummyworkshop" branch of this repository:
 
 ~~~
-~/CMSSW_5_3_32/src/ $ cmsenv
-~/CMSSW_5_3_32/src/ $ git clone -b dummyworkshop git://github.com/cms-opendata-analyses/AOD2NanoAODOutreachTool.git AOD2NanoAOD
-~/CMSSW_5_3_32/src/ $ cd AOD2NanoAOD
-~/CMSSW_5_3_32/src/ $ scram b
-~/CMSSW_5_3_32/src/ $ vi src/AOD2NanoAOD.cc #(or your favorite text editor)
+$ cmsenv
+$ git clone -b dummyworkshop git://github.com/cms-opendata-analyses/AOD2NanoAODOutreachTool.git AOD2NanoAOD
+$ cd AOD2NanoAOD
+$ scram b
+$ vi src/AOD2NanoAOD.cc #(or your favorite text editor)
 ~~~
 {: .source}
 

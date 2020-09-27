@@ -23,7 +23,7 @@ mass or energy**.
 
 ## 4-vector access functions
 
-In `AOD2NanoAOD/src/AOD2NanoAOD.cc` the muon four-vector elements are accessed as shown below (line XX). The
+In `AOD2NanoAOD/src/AOD2NanoAOD.cc` the muon four-vector elements are accessed as shown below. The
 values for each muon are stored into an array, which will become a branch in a ROOT TTree. 
 
 ~~~

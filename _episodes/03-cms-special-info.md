@@ -129,9 +129,10 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 ~~~
 {: .source}
 
->## Challenge: many other tau discriminants exist. Based on information from the TWiki, 
+>## Challenge: alternate tau IDs
+>
+>Many other tau discriminants exist. Based on information from the TWiki, 
 >save the values for some discriminants that are based on rejecting electrons or muons.
-
 {: .challenge}
 
 ## Detector-related information
@@ -174,7 +175,9 @@ nearby spatial region, and should pass an algorithm that rejects electrons from 
 the detector is used to form the identification criteria for all physics objects. 
 
 
->## Challenge: using the documentation links provided above, familiarize yourself with the detector-related information used to 
+>## Challenge: muon detector information
+>
+>Using the documentation links provided above, familiarize yourself with the detector-related information used to 
 >construct muon identification criteria. If time permits, attempt to replicate the content of the existing "soft" or "tight" 
 >ID flags using a combination of cuts on these quantities.
  
