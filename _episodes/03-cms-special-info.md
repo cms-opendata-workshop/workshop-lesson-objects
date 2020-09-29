@@ -51,6 +51,10 @@ The CMS Muon object group has created member functions for the identification al
 storing pass/fail decisions about the quality of each muon. As shown below, the algorithm depends
 on which vertex is being considered as the primary interaction vertex!
 
+Hard processes produce large angles between the final state partons. The final object of interest will be separated from 
+the other objects in the event or be "isolated". For instance, an isolated muon might be produced in the decay of a W boson.
+In contrast, a non-isolated muon can come from a weak decay inside a jet. 
+
 Muon isolation is calculated from a combination of factors: energy from charged hadrons, energy from
 neutral hadrons, and energy from photons, all in a cone of radius $\Delta R < 0.3$ or 0.4 around
 the muon. Many algorithms also feature a "correction factor" that subtracts average energy expected
