@@ -82,7 +82,7 @@ please check out the "dummyworkshop" branch of this repository:
 
 ~~~
 $ cmsenv
-$ git clone -b dummyworkshop git://github.com/cms-opendata-analyses/AOD2NanoAODOutreachTool.git AOD2NanoAOD
+$ git clone -b dummyworkshop git://github.com/jmhogan/AOD2NanoAODOutreachTool.git AOD2NanoAOD
 $ cd AOD2NanoAOD
 $ scram b
 $ vi src/AOD2NanoAOD.cc #(or your favorite text editor)
