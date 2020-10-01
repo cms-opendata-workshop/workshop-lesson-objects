@@ -42,6 +42,30 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 >edit `src/AOD2NanoAOD.cc` to access and store the electron's four-vector elements,
 >folling the examples set for muons. Note: You'll also need to create the arrays and TTree branches!
 >
+>> ## Solution:
+>>
+>>~~~
+>>float value_el_pt[max_el];
+>>float value_el_eta[max_el];
+>>float value_el_phi[max_el];
+>>float value_el_mass[max_el];
+>>~~~
+>>
+>>~~~
+>>tree->branch("electron_pt", value_el_pt, "electron_pt[nelectron]/f");
+>>tree->branch("electron_eta", value_el_eta, "electron_eta[nelectron]/f");
+>>tree->branch("electron_phi", value_el_phi, "electron_phi[nelectron]/f");
+>>tree->branch("electron_mass", value_el_mass, "electron_mass[nelectron]/f");
+>>~~~
+>>
+>>~~~
+>>value_el_pt[value_el_n] = it->pt();
+>>value_el_eta[value_el_n] = it->eta();
+>>value_el_phi[value_el_n] = it->phi();
+>>~~~
+>>
+>>{: .output}
+>{: .solution}  
 {: .challenge}
 
 ## Track access functions
@@ -83,6 +107,39 @@ if (trk.isNonnull()) {
 > auto trk = it->gsfTrack(); // electron track
 > ~~~
 >{: .source}
+>
+>> ## Solution:
+>>
+>>~~~
+>>int value_el_charge[max_el];
+>>float value_el_pfreliso03all[max_el];
+>>float value_el_dxy[max_el];
+>>float value_el_dxyErr[max_el];
+>>float value_el_dz[max_el];
+>>float value_el_dzErr[max_el];
+>>~~~
+>>
+>>~~~
+>>tree->Branch("Electron_charge", value_el_charge, "Electron_charge[nElectron]/I");
+>>tree->Branch("Electron_pfRelIso03_all", value_el_pfreliso03all, "Electron_pfRelIso03_all[nElectron]/F");
+>>tree->Branch("Electron_dxy", value_el_dxy, "Electron_dxy[nElectron]/F");
+>>tree->Branch("Electron_dxyErr", value_el_dxyErr, "Electron_dxyErr[nElectron]/F");
+>>tree->Branch("Electron_dz", value_el_dz, "Electron_dz[nElectron]/F");
+>>tree->Branch("Electron_dzErr", value_el_dzErr, "Electron_dzErr[nElectron]/F");
+>>~~~
+>>
+>>~~~
+>>auto trk = it->gsfTrack();
+>>value_el_dxy[value_el_n] = trk->dxy(pv);
+>>value_el_dz[value_el_n] = trk->dz(pv);
+>>value_el_dxyErr[value_el_n] = trk->d0Error();
+>>value_el_dzErr[value_el_n] = trk->dzError();
+>>
+>>~~~
+>>
+>>
+>>{: .output}
+>{: .solution} 
 {: .challenge}
 
 ## Matching to generated particles
@@ -176,6 +233,33 @@ if (!isData){
 > [0] TBrowser b
 > ~~~
 >{: .source}
+>
+>> ## Solution:
+>>
+>>~~~
+>>// Match electrons with gen particles and jets
+>>for (auto p = selectedElectrons.begin(); p != selectedElectrons.end(); p++) {
+>>  // Gen particle matching
+>>  auto p4 = p->p4();
+>>  auto idx = findBestVisibleMatch(interestingGenParticles, p4);
+>>  if (idx != -1) {
+>>    auto g = interestingGenParticles.begin() + idx;
+>>    value_gen_pt[value_gen_n] = g->pt();
+>>    value_gen_eta[value_gen_n] = g->eta();
+>>    value_gen_phi[value_gen_n] = g->phi();
+>>    value_gen_mass[value_gen_n] = g->mass();
+>>    value_gen_pdgid[value_gen_n] = g->pdgId();
+>>    value_gen_status[value_gen_n] = g->status();
+>>    value_el_genpartidx[p - selectedElectrons.begin()] = value_gen_n;
+>>    value_gen_n++;
+}
+>>
+>>    // Jet matching
+>>    value_el_jetidx[p - selectedElectrons.begin()] = findBestMatch(selectedJets, p4);
+>>  }
+>>~~~
+>>{: .output}
+>{: .solution} 
 {: .challenge}
 
 
