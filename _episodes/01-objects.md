@@ -87,8 +87,11 @@ $ cd AOD2NanoAOD
 $ scram b
 $ vi src/AOD2NanoAOD.cc #(or your favorite text editor)
 ~~~
-{: .source}
+{: .language-bash}
 
+> **NOTE: if you're starting this on THURSDAY, jump ahead to Physics Objects 2 and complete
+> the database and text file setup in the first episode!**
+{: .prereq}
 
 In the source code for this tool, the definitions of the muon classes are included:
 ~~~
