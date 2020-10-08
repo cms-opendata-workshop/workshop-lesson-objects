@@ -57,10 +57,10 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 >> the second argument is the variable to be stored in this branch, and the third argument gives the branch's 
 >> structure as an array of floats (/f) with size [nelectron].
 >>~~~
->>tree->branch("electron_pt", value_el_pt, "electron_pt[nelectron]/f");
->>tree->branch("electron_eta", value_el_eta, "electron_eta[nelectron]/f");
->>tree->branch("electron_phi", value_el_phi, "electron_phi[nelectron]/f");
->>tree->branch("electron_mass", value_el_mass, "electron_mass[nelectron]/f");
+>>tree->Branch("electron_pt", value_el_pt, "electron_pt[nelectron]/f");
+>>tree->Branch("electron_eta", value_el_eta, "electron_eta[nelectron]/f");
+>>tree->Branch("electron_phi", value_el_phi, "electron_phi[nelectron]/f");
+>>tree->Branch("electron_mass", value_el_mass, "electron_mass[nelectron]/f");
 >>~~~
 >>{: .language-cpp}
 >>
