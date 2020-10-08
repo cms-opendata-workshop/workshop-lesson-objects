@@ -237,7 +237,7 @@ if (!isData){
 > $ scram b
 > $ cmsRun configs/simulation_cfg.py
 > $ root -l output.root
-> [0] TBrowser b
+> [1] TBrowser b
 > ~~~
 >{: .language-bash}
 >
@@ -267,6 +267,17 @@ if (!isData){
 >>}
 >>~~~
 >>{: .language-cpp}
+>>
+>> As an example of using these new branches, we can plot the electrons' pT resolution and compare cases where the electrons were matched
+>> to a generated electron, vs where they were matched to a photon. Unsurprisingly, the resolution is much smaller for properly gen-matched electrons!
+>> ~~~
+>> $ root -l output.root
+>> [1] _file0->cd("aod2nanoaod")
+>> [2] Events->Draw("(GenPart_pt[Electron_genPartIdx] - electron_pt)/GenPart_pt[Electron_genPartIdx]","abs(GenPart_pdgId[Electron_genPartIdx]) == 11");
+>> [3] Events->Draw("(GenPart_pt[Electron_genPartIdx] - electron_pt)/GenPart_pt[Electron_genPartIdx]","abs(GenPart_pdgId[Electron_genPartIdx]) == 22");
+>> ~~~
+>>{: .language-bash}
+>>![](../assets/img/elRes_11.png)  ![](../assets/img/elRes_22.png)
 >{: .solution} 
 {: .challenge}
 
