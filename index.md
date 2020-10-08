@@ -30,7 +30,7 @@ show how an analyzer can combine different identification elements into selectio
 
 > ## Prerequisites
 >
-> Complete the pre-exercises and watch the objects demonstration video.
+> Complete the pre-exercises, watch the objects demonstration video, and **follow the instructions one the setup page**.
 {: .prereq}
 
 > ## Big questions
