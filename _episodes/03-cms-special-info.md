@@ -86,30 +86,34 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 >to apply the "DeltaBeta" pileup correction.
 >Also add the pass/fail information about the Loose and Soft identification working points.
 >> ## Solution:
->>
+>> The DeltaBeta correction for pileup involves subtracting off half of the pileup contribution
+>> that can be accessed from the "iso04" object already being used:
 >>~~~
 >>value_mu_pfreliso04all[value_mu_n] =
 >>    (iso04.sumChargedHadronPt + max(0.,iso04.sumNeutralHadronEt + iso04.sumPhotonEt- 0.5*iso04.sumPUPt))/it->pt();
 >>~~~
+>>{: .source}
 >>
+>> To add new ID variables we follow the same sequence as other challenges: declaration, branch, access. 
+>> You might add these beneath the existing "Tight" ID in all three places:
 >>~~~
 >>bool value_mu_tightid[max_mu];
 >>bool value_mu_softid[max_mu];
 >>bool value_mu_looseid[max_mu];
 >>~~~
->>
+>>{: .source}
 >>~~~
 >>tree->Branch("Muon_tightId", value_mu_tightid, "Muon_tightId[nMuon]/O");
 >>tree->Branch("Muon_softId", value_mu_softid, "Muon_softId[nMuon]/O");
 >>tree->Branch("Muon_looseId", value_mu_looseid, "Muon_looseId[nMuon]/O");
 >>~~~
->>
+>>{: .source}
 >>~~~
 >>value_mu_tightid[value_mu_n] = muon::isTightMuon(*it, *vertices->begin());
 >>value_mu_softid[value_mu_n] = muon::isSoftMuon(*it, *vertices->begin());
 >>value_mu_looseid[value_mu_n] = muon::isLooseMuon(*it);
 >>~~~
->>{: .output}
+>>{: .source}
 >{: .solution}
 {: .challenge}
 
@@ -165,7 +169,11 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >save the values for some discriminants that are based on rejecting electrons or muons.
 >
 >> ## Solution:
+>> The TWiki describes Loose/Medium/Tight ID levels for an "AntiElectron" algorithm and an "AntiMuon" algorithm. 
+>> They can be accessed like the other tau IDs, but you might need to refer to the output of `edmDumpEventContent` 
+>> to find the exact form of the InputTag name. 
 >>
+>> Add declarations:
 >>~~~
 >>bool value_tau_idantieleloose[max_tau];
 >>bool value_tau_idantielemedium[max_tau];
@@ -174,6 +182,8 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >>bool value_tau_idantimumedium[max_tau];
 >>bool value_tau_idantimutight[max_tau];
 >>~~~
+>>{: .source}
+>> Add branches:
 >>~~~
 >>tree->Branch("Tau_idAntiEleLoose", value_tau_idantieleloose, "Tau_idAntiEleLoose[nTau]/O");
 >>tree->Branch("Tau_idAntiEleMedium", value_tau_idantielemedium, "Tau_idAntiEleMedium[nTau]/O");
@@ -182,7 +192,8 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >>tree->Branch("Tau_idAntiMuMedium", value_tau_idantimumedium, "Tau_idAntiMuMedium[nTau]/O");
 >>tree->Branch("Tau_idAntiMuTight", value_tau_idantimutight, "Tau_idAntiMuTight[nTau]/O");
 >>~~~
->>
+>>{: .source}
+>> Create handles and get the information from the input file:
 >>~~~
 >>Handle<PFTauCollection> taus;
 >>iEvent.getByLabel(InputTag("hpsPFTauProducer"), taus);
@@ -192,20 +203,7 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >>                           tausTightEleRej, tausLooseMuonRej, tausMediumMuonRej,
 >>                           tausTightMuonRej, tausRawIso;
 >>
->>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByDecayModeFinding"),
->>        tausDecayMode);
->>
->>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByRawCombinedIsolationDBSumPtCorr"),
->>        tausRawIso);
->>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByVLooseCombinedIsolationDBSumPtCorr"),
->>        tausVLooseIso);
->>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByLooseCombinedIsolationDBSumPtCorr"),
->>        tausLooseIso);
->>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByMediumCombinedIsolationDBSumPtCorr"),
->>        tausMediumIso);
->>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByTightCombinedIsolationDBSumPtCorr"),
->>        tausTightIso);
->>
+>> // new things only
 >>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByLooseElectronRejection"),
 >>        tausLooseEleRej);
 >>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByMediumElectronRejection"),
@@ -220,7 +218,8 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByTightMuonRejection"),
 >>        tausTightMuonRej);
 >>~~~
->>
+>>{: .source}
+>> And finally, access the discriminator from the second element of the pair:
 >>~~~
 >>value_tau_idantieleloose[value_tau_n] = tausLooseEleRej->operator[](idx).second;
 >>value_tau_idantielemedium[value_tau_n] = tausMediumEleRej->operator[](idx).second;
@@ -229,7 +228,7 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >>value_tau_idantimumedium[value_tau_n] = tausMediumMuonRej->operator[](idx).second;
 >>value_tau_idantimutight[value_tau_n] = tausTightMuonRej->operator[](idx).second;
 >>~~~
->>{: .output}
+>>{: .source}
 >{: .solution}
 {: .challenge}
 
@@ -278,9 +277,26 @@ the detector is used to form the identification criteria for all physics objects
 >Using the documentation links provided above, familiarize yourself with the detector-related information used to 
 >construct muon identification criteria. If time permits, attempt to replicate the content of the existing "soft" or "tight" 
 >ID flags using a combination of cuts on these quantities.
+>
+>> ## Solution
+>> The TWiki gives the member functions needed to reconstruct the muon ID. We can see from the built-in tightID method that a 
+>> vertex is needed for some of the criteria: `muon::isTightMuon(*it, *vertices->begin())`. To see how to interact with the
+>> vertex collection you can refer back to the vertex section starting at line 504 (according to the file in the github repository). 
+>> ~~~
+>> value_mu_isTightByHand = false;
+>> if( it->isGlobalMuon() && it->isPFMuon() && 
+>>     it->globalTrack()->normalizedChi2() < 10. && it->globalTrack()->hitPattern().numberOfValidMuonHits() > 0 &&
+>>     it->numberOfMatchedStations() > 1 && 
+>>     fabs(it->muonBestTrack()->dxy(vertices->begin()->position())) < 0.2 && fabs(it->muonBestTrack()->dz(vertex->position())) < 0.5 &&
+>>     it->innerTrack()->hitPattern().numberOfValidPixelHits() > 0 && it->innerTrack()->hitPattern().trackerLayersWithMeasurement() > 5)
+>>    {
+>>      value_mu_isTightByHand = true;
+>>    }
+>> ~~~
+>>{: .source}
+>> Of course, we also need to add isTightByHand to the declarations and branches at the top of the file!
+>{: .solution}
 {: .challenge}
-
-
 
 
 {% include links.md %}
