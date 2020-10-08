@@ -35,7 +35,7 @@ the "muons" module in AOD contains many `reco::Muon` objects (one per muon in th
 ~~~
 $ edmDumpEventContent root://eospublic.cern.ch//eos/opendata/cms/MonteCarlo2012/Summer12_DR53X/TTbar_8TeV-Madspin_aMCatNLO-herwig/AODSIM/PU_S10_START53_V19-v2/00000/000A9D3F-CE4C-E311-84F8-001E673969D2.root
 ~~~
-{: .source}
+{: .language-bash}
 
 ~~~
 Type                                  Module                      Label             Process
@@ -100,7 +100,7 @@ In the source code for this tool, the definitions of the muon classes are includ
 #include "DataFormats/MuonReco/interface/MuonFwd.h"
 #include "DataFormats/MuonReco/interface/MuonSelectors.h"
 ~~~
-{: .source}
+{: .language-cpp}
 
 You learned about the EDAnalyzer class in the pre-exercises. The AOD2NanoAOD tool is an EDAnalyzer. 
 The "analyze" function of an EDAnalyzer is performed once per event. Muons can be accessed like this:
@@ -116,7 +116,7 @@ void AOD2NanoAOD::analyze(const edm::Event &iEvent,
   Handle<MuonCollection> muons;
   iEvent.getByLabel(InputTag("muons"), muons);
 ~~~ 
-{: .source}
+{: .language-cpp}
 
 The result is an  called "muons" which is a collection of all the muon objects. 
 In the next episode we'll look at the member functions for muons.
@@ -132,7 +132,7 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
     }
 }
 ~~~
-{: .source}
+{: .language-cpp}
 
 
 {% include links.md %}

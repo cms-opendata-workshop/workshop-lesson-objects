@@ -78,7 +78,7 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
     value_mu_tightid[value_mu_n] = muon::isTightMuon(*it, *vertices->begin());
 }
 ~~~
-{: .source}
+{: .language-cpp}
 
 >## Challenge: alternate IDs and isolations
 >
@@ -92,7 +92,7 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 >>value_mu_pfreliso04all[value_mu_n] =
 >>    (iso04.sumChargedHadronPt + max(0.,iso04.sumNeutralHadronEt + iso04.sumPhotonEt- 0.5*iso04.sumPUPt))/it->pt();
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >>
 >> To add new ID variables we follow the same sequence as other challenges: declaration, branch, access. 
 >> You might add these beneath the existing "Tight" ID in all three places:
@@ -101,19 +101,19 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 >>bool value_mu_softid[max_mu];
 >>bool value_mu_looseid[max_mu];
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >>~~~
 >>tree->Branch("Muon_tightId", value_mu_tightid, "Muon_tightId[nMuon]/O");
 >>tree->Branch("Muon_softId", value_mu_softid, "Muon_softId[nMuon]/O");
 >>tree->Branch("Muon_looseId", value_mu_looseid, "Muon_looseId[nMuon]/O");
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >>~~~
 >>value_mu_tightid[value_mu_n] = muon::isTightMuon(*it, *vertices->begin());
 >>value_mu_softid[value_mu_n] = muon::isSoftMuon(*it, *vertices->begin());
 >>value_mu_looseid[value_mu_n] = muon::isLooseMuon(*it);
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >{: .solution}
 {: .challenge}
 
@@ -141,7 +141,7 @@ iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByRawCombinedIsolationDBSumPtC
 iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByVLooseCombinedIsolationDBSumPtCorr"),tausVLooseIso);
 //...etc...
 ~~~
-{: .source}
+{: .language-cpp}
 
 The tau discriminator collections act as pairs, containing the index of the tau and the value
 of the discriminant for that tau. Note that the arrays are filled by calls to the individual
@@ -161,7 +161,7 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
     // ...etc...
 }
 ~~~
-{: .source}
+{: .language-cpp}
 
 >## Challenge: alternate tau IDs
 >
@@ -182,7 +182,7 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >>bool value_tau_idantimumedium[max_tau];
 >>bool value_tau_idantimutight[max_tau];
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >> Add branches:
 >>~~~
 >>tree->Branch("Tau_idAntiEleLoose", value_tau_idantieleloose, "Tau_idAntiEleLoose[nTau]/O");
@@ -192,7 +192,7 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >>tree->Branch("Tau_idAntiMuMedium", value_tau_idantimumedium, "Tau_idAntiMuMedium[nTau]/O");
 >>tree->Branch("Tau_idAntiMuTight", value_tau_idantimutight, "Tau_idAntiMuTight[nTau]/O");
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >> Create handles and get the information from the input file:
 >>~~~
 >>Handle<PFTauCollection> taus;
@@ -218,7 +218,7 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByTightMuonRejection"),
 >>        tausTightMuonRej);
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >> And finally, access the discriminator from the second element of the pair:
 >>~~~
 >>value_tau_idantieleloose[value_tau_n] = tausLooseEleRej->operator[](idx).second;
@@ -228,7 +228,7 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >>value_tau_idantimumedium[value_tau_n] = tausMediumMuonRej->operator[](idx).second;
 >>value_tau_idantimutight[value_tau_n] = tausTightMuonRej->operator[](idx).second;
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >{: .solution}
 {: .challenge}
 
@@ -260,7 +260,7 @@ if ( abs(it->eta()) <= 1.479 ) {
   }
 }
 ~~~
-{: .source}
+{: .language-cpp}
 
 The first two criteria (`deltaEta` and `deltaPh`) indicate how the electron's trajectory varies between the track and the ECAL cluster,
 with smaller variations preferred for the "tightest" quality levels. The `sigmaIetaIeta` criterion describes the variance of the ECAL
@@ -293,7 +293,7 @@ the detector is used to form the identification criteria for all physics objects
 >>      value_mu_isTightByHand = true;
 >>    }
 >> ~~~
->>{: .source}
+>>{: .language-cpp}
 >> Of course, we also need to add isTightByHand to the declarations and branches at the top of the file!
 >{: .solution}
 {: .challenge}

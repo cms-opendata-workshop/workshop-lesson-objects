@@ -34,7 +34,7 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
   value_mu_mass[value_mu_n] = it->mass();
 }
 ~~~
-{: .source}
+{: .language-cpp}
 
 >## Challenge: electron 4-vector
 >
@@ -51,7 +51,7 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 >>float value_el_phi[max_el];
 >>float value_el_mass[max_el];
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >>
 >> Add branches to the tree after declaring the variables. The first argument is the branch name, 
 >> the second argument is the variable to be stored in this branch, and the third argument gives the branch's 
@@ -62,7 +62,7 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 >>tree->branch("electron_phi", value_el_phi, "electron_phi[nelectron]/f");
 >>tree->branch("electron_mass", value_el_mass, "electron_mass[nelectron]/f");
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >>
 >> Finally, in the loop over the electron collection, access the elements of the four-vector: 
 >>~~~
@@ -71,7 +71,7 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 >>value_el_phi[value_el_n] = it->phi();
 >>value_el_mass[value_el_n] = it->mass();
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >{: .solution}  
 {: .challenge}
 
@@ -86,7 +86,7 @@ From a muon object, we can access the electric charge and the associated track:
 value_mu_charge[value_mu_n] = it->charge();
 auto trk = it->globalTrack(); // muon track
 ~~~
-{: .source}
+{: .language-cpp}
 
 Often, the most pertinent information about an object (such as a muon) to access from its
 associated track is its **impact parameter** with respect to the primary interaction vertex.
@@ -102,7 +102,7 @@ if (trk.isNonnull()) {
    value_mu_dzErr[value_mu_n] = trk->dzError();
 }
 ~~~
-{: .source}
+{: .language-cpp}
 
 >## Challenge: electron track properties
 >
@@ -113,7 +113,7 @@ if (trk.isNonnull()) {
 > ~~~
 > auto trk = it->gsfTrack(); // electron track
 > ~~~
->{: .source}
+>{: .language-cpp}
 >
 >> ## Solution:
 >> Again, add information in three places:
@@ -125,7 +125,7 @@ if (trk.isNonnull()) {
 >>float value_el_dz[max_el];
 >>float value_el_dzErr[max_el];
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >> Branches:
 >>~~~
 >>tree->Branch("Electron_charge", value_el_charge, "Electron_charge[nElectron]/I");
@@ -134,7 +134,7 @@ if (trk.isNonnull()) {
 >>tree->Branch("Electron_dz", value_el_dz, "Electron_dz[nElectron]/F");
 >>tree->Branch("Electron_dzErr", value_el_dzErr, "Electron_dzErr[nElectron]/F");
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >> And access values in the electron loop. The format is identical to the muon loop!
 >>~~~
 >>value_el_charge[value_el_n] = it->charge();
@@ -145,7 +145,7 @@ if (trk.isNonnull()) {
 >>value_el_dxyErr[value_el_n] = trk->d0Error();
 >>value_el_dzErr[value_el_n] = trk->dzError();
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >{: .solution} 
 {: .challenge}
 
@@ -182,7 +182,7 @@ int findBestMatch(T& gens, reco::Candidate::LorentzVector& p4) {
   return idx; # return the index of the match
 }
 ~~~
-{: .source}
+{: .language-cpp}
 
 The other utility functions are similar, but correct for generated particles that
 decay to neutrinos, which would affect the "visible" 4-vector. 
@@ -224,7 +224,7 @@ if (!isData){
    }
 }
 ~~~
-{: .source}
+{: .language-cpp}
 
 >## Challenge: electron matching
 >
@@ -239,7 +239,7 @@ if (!isData){
 > $ root -l output.root
 > [0] TBrowser b
 > ~~~
->{: .source}
+>{: .language-bash}
 >
 >> ## Solution:
 >>The structure for this matching exercise is identical to the muon matching segment. Loop over selected electrons,
@@ -266,7 +266,7 @@ if (!isData){
 >>  value_el_jetidx[p - selectedElectrons.begin()] = findBestMatch(selectedJets, p4);
 >>}
 >>~~~
->>{: .source}
+>>{: .language-cpp}
 >{: .solution} 
 {: .challenge}
 
