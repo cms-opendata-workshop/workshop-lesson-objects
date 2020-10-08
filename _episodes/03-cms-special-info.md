@@ -85,6 +85,32 @@ for (auto it = muons->begin(); it != muons->end(); it++) {
 >Using the documentation on the TWiki page, adjust the 0.4-cone muon isolation calculation
 >to apply the "DeltaBeta" pileup correction.
 >Also add the pass/fail information about the Loose and Soft identification working points.
+>> ## Solution:
+>>
+>>~~~
+>>value_mu_pfreliso04all[value_mu_n] =
+>>    (iso04.sumChargedHadronPt + max(0.,iso04.sumNeutralHadronEt + iso04.sumPhotonEt- 0.5*iso04.sumPUPt))/it->pt();
+>>~~~
+>>
+>>~~~
+>>bool value_mu_tightid[max_mu];
+>>bool value_mu_softid[max_mu];
+>>bool value_mu_looseid[max_mu];
+>>~~~
+>>
+>>~~~
+>>tree->Branch("Muon_tightId", value_mu_tightid, "Muon_tightId[nMuon]/O");
+>>tree->Branch("Muon_softId", value_mu_softid, "Muon_softId[nMuon]/O");
+>>tree->Branch("Muon_looseId", value_mu_looseid, "Muon_looseId[nMuon]/O");
+>>~~~
+>>
+>>~~~
+>>value_mu_tightid[value_mu_n] = muon::isTightMuon(*it, *vertices->begin());
+>>value_mu_softid[value_mu_n] = muon::isSoftMuon(*it, *vertices->begin());
+>>value_mu_looseid[value_mu_n] = muon::isLooseMuon(*it);
+>>~~~
+>>{: .output}
+>{: .solution}
 {: .challenge}
 
 ## Tau leptons
@@ -137,6 +163,74 @@ for (auto it = taus->begin(); it != taus->end(); it++) {
 >
 >Many other tau discriminants exist. Based on information from the TWiki, 
 >save the values for some discriminants that are based on rejecting electrons or muons.
+>
+>> ## Solution:
+>>
+>>~~~
+>>bool value_tau_idantieleloose[max_tau];
+>>bool value_tau_idantielemedium[max_tau];
+>>bool value_tau_idantieletight[max_tau];
+>>bool value_tau_idantimuloose[max_tau];
+>>bool value_tau_idantimumedium[max_tau];
+>>bool value_tau_idantimutight[max_tau];
+>>~~~
+>>~~~
+>>tree->Branch("Tau_idAntiEleLoose", value_tau_idantieleloose, "Tau_idAntiEleLoose[nTau]/O");
+>>tree->Branch("Tau_idAntiEleMedium", value_tau_idantielemedium, "Tau_idAntiEleMedium[nTau]/O");
+>>tree->Branch("Tau_idAntiEleTight", value_tau_idantieletight, "Tau_idAntiEleTight[nTau]/O");
+>>tree->Branch("Tau_idAntiMuLoose", value_tau_idantimuloose, "Tau_idAntiMuLoose[nTau]/O");
+>>tree->Branch("Tau_idAntiMuMedium", value_tau_idantimumedium, "Tau_idAntiMuMedium[nTau]/O");
+>>tree->Branch("Tau_idAntiMuTight", value_tau_idantimutight, "Tau_idAntiMuTight[nTau]/O");
+>>~~~
+>>
+>>~~~
+>>Handle<PFTauCollection> taus;
+>>iEvent.getByLabel(InputTag("hpsPFTauProducer"), taus);
+>>
+>>Handle<PFTauDiscriminator> tausLooseIso, tausVLooseIso, tausMediumIso, tausTightIso,
+>>                           tausDecayMode, tausLooseEleRej, tausMediumEleRej,
+>>                           tausTightEleRej, tausLooseMuonRej, tausMediumMuonRej,
+>>                           tausTightMuonRej, tausRawIso;
+>>
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByDecayModeFinding"),
+>>        tausDecayMode);
+>>
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByRawCombinedIsolationDBSumPtCorr"),
+>>        tausRawIso);
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByVLooseCombinedIsolationDBSumPtCorr"),
+>>        tausVLooseIso);
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByLooseCombinedIsolationDBSumPtCorr"),
+>>        tausLooseIso);
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByMediumCombinedIsolationDBSumPtCorr"),
+>>        tausMediumIso);
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByTightCombinedIsolationDBSumPtCorr"),
+>>        tausTightIso);
+>>
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByLooseElectronRejection"),
+>>        tausLooseEleRej);
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByMediumElectronRejection"),
+>>        tausMediumEleRej);
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByTightElectronRejection"),
+>>        tausTightEleRej);
+>>
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByLooseMuonRejection"),
+>>        tausLooseMuonRej);
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByMediumMuonRejection"),
+>>        tausMediumMuonRej);
+>>iEvent.getByLabel(InputTag("hpsPFTauDiscriminationByTightMuonRejection"),
+>>        tausTightMuonRej);
+>>~~~
+>>
+>>~~~
+>>value_tau_idantieleloose[value_tau_n] = tausLooseEleRej->operator[](idx).second;
+>>value_tau_idantielemedium[value_tau_n] = tausMediumEleRej->operator[](idx).second;
+>>value_tau_idantieletight[value_tau_n] = tausTightEleRej->operator[](idx).second;
+>>value_tau_idantimuloose[value_tau_n] = tausLooseMuonRej->operator[](idx).second;
+>>value_tau_idantimumedium[value_tau_n] = tausMediumMuonRej->operator[](idx).second;
+>>value_tau_idantimutight[value_tau_n] = tausTightMuonRej->operator[](idx).second;
+>>~~~
+>>{: .output}
+>{: .solution}
 {: .challenge}
 
 ## Detector-related information
