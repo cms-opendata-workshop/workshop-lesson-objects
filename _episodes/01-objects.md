@@ -76,24 +76,21 @@ physics objects. Other important modules might include:
 
 ## Opening a module
 
-The [AOD2NanoAODOutreachTool](https://github.com/cms-opendata-analyses/AOD2NanoAODOutreachTool) 
-repository is the example we will use for accessing information from AOD files. If you have not already done so, 
-please check out the "dummyworkshop" branch of this repository:
-
-~~~
-$ cd ~/CMSSW_5_3_32/src/
-$ cmsenv
-$ mkdir workspace
-$ cd workspace
-$ git clone -b dummyworkshop git://github.com/jmhogan/AOD2NanoAODOutreachTool.git 
-$ cd AOD2NanoAODOutreachTool
-$ scram b
-$ vi src/AOD2NanoAOD.cc #(or your favorite text editor)
-~~~
-{: .language-bash}
-
-> **NOTE: if you're starting this on THURSDAY, jump ahead to Physics Objects 2 and complete
-> the database and text file setup in the first episode!**
+>The [AOD2NanoAODOutreachTool](https://github.com/cms-opendata-analyses/AOD2NanoAODOutreachTool) 
+>repository is the example we will use for accessing information from AOD files. If you have not already done so, 
+>please check out the "dummyworkshop" branch of this repository:
+>
+>~~~
+>$ cd ~/CMSSW_5_3_32/src/
+>$ cmsenv
+>$ mkdir workspace
+>$ cd workspace
+>$ git clone -b dummyworkshop git://github.com/jmhogan/AOD2NanoAODOutreachTool.git 
+>$ cd AOD2NanoAODOutreachTool
+>$ scram b
+>$ vi src/AOD2NanoAOD.cc #(or your favorite text editor)
+>~~~
+>{: .language-bash}
 {: .prereq}
 
 In the source code for this tool, the definitions of the muon classes are included:
