@@ -287,7 +287,7 @@ the detector is used to form the identification criteria for all physics objects
 >> if( it->isGlobalMuon() && it->isPFMuon() && 
 >>     it->globalTrack()->normalizedChi2() < 10. && it->globalTrack()->hitPattern().numberOfValidMuonHits() > 0 &&
 >>     it->numberOfMatchedStations() > 1 && 
->>     fabs(it->muonBestTrack()->dxy(vertices->begin()->position())) < 0.2 && fabs(it->muonBestTrack()->dz(vertex->position())) < 0.5 &&
+>>     fabs(it->muonBestTrack()->dxy(vertices->begin()->position())) < 0.2 && fabs(it->muonBestTrack()->dz(vertices->begin()->position())) < 0.5 &&
 >>     it->innerTrack()->hitPattern().numberOfValidPixelHits() > 0 && it->innerTrack()->hitPattern().trackerLayersWithMeasurement() > 5)
 >>    {
 >>      value_mu_isTightByHand[value_mu_n] = true;
